@@ -1,0 +1,39 @@
+# Ignore Visual Studio files
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.orig
+[Bb]in
+[Dd]ebug*/
+[Oo]bj/
+*.lib
+*.sbr
+*.sln.docstates
+obj/
+[Rr]elease*/
+_ReSharper*/
+*.DotSettings
+[Tt]est[Rr]esult*
+# Ignore MonoDevelop files
+*.userprefs
+# Ignore NUnit project files
+*.nunit
+# Ignore NuGet Packages
+/src/packages/
+packages/
+.vs
+*.lock.json
