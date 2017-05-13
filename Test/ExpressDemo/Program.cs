@@ -10,6 +10,8 @@ namespace ExpressDemo
     {
         static void Main(string[] args)
         {
+            var obj1 = new Test1();
+            Console.ReadLine();
         }
     }
 }
