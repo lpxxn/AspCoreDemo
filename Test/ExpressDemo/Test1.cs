@@ -40,8 +40,43 @@ namespace ExpressDemo
             Console.WriteLine(exp.ToString());
             return exp;
         }
+
+
+
+
+
+        //var instantiator = AnonymousInstantiator(new { Name = default(string), Num = default(int) });
+
+        //var a1 = instantiator(new object[] { "abc", 123 }); // strongly typed
+        //var a2 = instantiator(new object[] { "xyz", 789 }); // strongly typed
+                                                            // etc.
+        //You can avoid using DynamicInvoke which is painfully slow.You could make use of type inference in C# to get your anonymous type instantiated generically. Something like:
+
+        public static Func<object[], T> AnonymousInstantiator<T>(T example)
+        {
+            var ctor = typeof(T).GetConstructors().First();
+            var paramExpr = Expression.Parameter(typeof(object[]));
+            return Expression.Lambda<Func<object[], T>>
+            (
+                Expression.New
+                (
+                    ctor,
+                    ctor.GetParameters().Select
+                    (
+                        (x, i) => Expression.Convert
+                        (
+                            Expression.ArrayIndex(paramExpr, Expression.Constant(i)),
+                            x.ParameterType
+                        )
+                    )
+                ), paramExpr).Compile();
+        }
+
+
+
+
     }
 
-   
-    
+
+
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspCoreDemo.ClassEx;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspCoreDemo.Controllers
@@ -40,5 +41,31 @@ namespace AspCoreDemo.Controllers
         public void Delete(int id)
         {
         }
+
+
+        #region TestSession
+
+        private const string SessionKeyDate = "testSessionKey";
+        [HttpGet("TestSessionSetDate")]
+        public IActionResult SetDate()
+        {
+            // Requires you add the Set extension method mentioned in the article.
+            HttpContext.Session.Set<DateTime>(SessionKeyDate, DateTime.Now);
+            return RedirectToAction("GetDate");
+        }
+
+        [HttpGet("TestSessionGetData")]
+        public IActionResult GetDate()
+        {
+            // Requires you add the Get extension method mentioned in the article.
+            var date = HttpContext.Session.Get<DateTime>(SessionKeyDate);
+            var sessionTime = date.TimeOfDay.ToString();
+            var currentTime = DateTime.Now.TimeOfDay.ToString();
+
+            return Content($"Current time: {currentTime} - "
+                         + $"session time: {sessionTime}");
+        }
+
+        #endregion
     }
 }
