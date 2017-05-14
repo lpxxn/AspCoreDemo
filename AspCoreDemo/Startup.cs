@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspCoreDemo.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AspCoreDemo
@@ -29,7 +32,8 @@ namespace AspCoreDemo
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc().AddMvcOptions(o=>o.Filters.Add(new GlobalExeptionLogger()));
+            
            
 
             services.AddSwaggerGen(c =>
@@ -49,12 +53,24 @@ namespace AspCoreDemo
                 options.CookieHttpOnly = true;
             });
             #endregion
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseSession();
+
+            #region Nlog
+
+            loggerFactory.AddNLog(); // add NLog
+
+            //add NLog.Web
+            app.AddNLogWeb();
+            env.ConfigureNLog("nlog.config");
+
+            #endregion
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             if (env.IsDevelopment())

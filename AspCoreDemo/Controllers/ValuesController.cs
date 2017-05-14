@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AspCoreDemo.ClassEx;
@@ -40,6 +41,13 @@ namespace AspCoreDemo.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        // DELETE api/values/5
+        [HttpGet("Error")]
+        public void Error()
+        {
+            throw new InvalidExpressionException("Error");
         }
 
 
